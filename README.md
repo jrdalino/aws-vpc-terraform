@@ -18,7 +18,7 @@
 - VPC Endpoint for S3
 
 ## Architecture Diagram: https://www.draw.io/#G1I1q3XWw3KAdFl1bfwG3AbW_tR6GKMXsB
-![Image description](https://github.com/jrdalino/aws-vpc-terraform/blob/master/images/aws_vpc_architecture_diagram.png)
+![Image description](https://github.com/jrdalino/aws-vpc-terraform/blob/main/images/aws_vpc_architecture_diagram.png)
 
 ## Prerequisites
 - Provision an S3 bucket to store Terraform State and DynamoDB for state-lock using https://github.com/jrdalino/aws-tfstate-backend-terraform
