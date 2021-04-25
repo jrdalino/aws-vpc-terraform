@@ -254,7 +254,7 @@ resource "aws_vpc_endpoint" "dynamodb" {
   # auto_accept
   # policy
   # private_dns_enabled = false # Applicable for endpoints of type Interface
-  route_table_ids = [aws_route_table.gateway[*].id, aws_route_table.application[*].id, aws_route_table.database[*].id]
+  route_table_ids = [aws_route_table.gateway.*.id[count.index], aws_route_table.application.*.id[count.index], aws_route_table.database.*.id[count.index]]
   # subnet_ids # Applicable for endpoints of type GatewayLoadBalancer and Interface.
   tags = {
     Name           = var.aws_vpc_endpoint_dynamodb_name
@@ -271,7 +271,7 @@ resource "aws_vpc_endpoint" "s3" {
   # auto_accept
   # policy
   # private_dns_enabled = false # Applicable for endpoints of type Interface
-  route_table_ids = [aws_route_table.gateway[*].id, aws_route_table.application[*].id, aws_route_table.database[*].id]
+  route_table_ids = [aws_route_table.gateway.*.id[count.index], aws_route_table.application.*.id[count.index], aws_route_table.database.*.id[count.index]]
   # subnet_ids # Applicable for endpoints of type GatewayLoadBalancer and Interface.
   tags = {
     Name           = var.aws_vpc_endpoint_s3_name
