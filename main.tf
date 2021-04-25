@@ -242,7 +242,7 @@ resource "aws_route_table_association" "application" {
 
 # Route Table Association - Database
 resource "aws_route_table_association" "database" {
-  count          = var.subnet_count
+  count          = var.subnet_count  
   subnet_id      = aws_subnet.database.*.id[count.index]
   route_table_id = aws_route_table.database.id
 }
@@ -254,7 +254,7 @@ resource "aws_vpc_endpoint" "dynamodb" {
   # auto_accept
   # policy
   # private_dns_enabled = false # Applicable for endpoints of type Interface
-  route_table_ids = [aws_route_table.gateway.*.id[count.index], aws_route_table.application.*.id[count.index], aws_route_table.database.*.id[count.index]]
+  route_table_ids = [aws_route_table.gateway.id, aws_route_table.application.*.id[*], aws_route_table.database.id]
   # subnet_ids # Applicable for endpoints of type GatewayLoadBalancer and Interface.
   tags = {
     Name           = var.aws_vpc_endpoint_dynamodb_name
@@ -265,13 +265,13 @@ resource "aws_vpc_endpoint" "dynamodb" {
   vpc_endpoint_type = "Gateway" # GatewayLoadBalancer, or Interface
 }
 
-resource "aws_vpc_endpoint" "s3" {
+resource "aws_vpc_endpoint" "s3" { 
   service_name = "com.amazonaws.${var.aws_region}.s3"
   vpc_id       = aws_vpc.this.id
   # auto_accept
   # policy
   # private_dns_enabled = false # Applicable for endpoints of type Interface
-  route_table_ids = [aws_route_table.gateway.*.id[count.index], aws_route_table.application.*.id[count.index], aws_route_table.database.*.id[count.index]]
+  route_table_ids = [aws_route_table.gateway.id, aws_route_table.application.*.id[*], aws_route_table.database.id]
   # subnet_ids # Applicable for endpoints of type GatewayLoadBalancer and Interface.
   tags = {
     Name           = var.aws_vpc_endpoint_s3_name
