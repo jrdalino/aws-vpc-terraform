@@ -249,27 +249,35 @@ resource "aws_route_table_association" "database" {
 
 # VPC Endpoint
 resource "aws_vpc_endpoint" "dynamodb" {
-  vpc_id       = aws_vpc.this.id
   service_name = "com.amazonaws.${var.aws_region}.dynamodb"
-
-  # Tagging
+  vpc_id       = aws_vpc.this.id
+  # auto_accept
+  # policy
+  # private_dns_enabled = false # Applicable for endpoints of type Interface
+  route_table_ids = [aws_route_table.gateway.id, aws_route_table.application.id, aws_route_table.database.id]
+  # subnet_ids # Applicable for endpoints of type GatewayLoadBalancer and Interface.
   tags = {
     Name           = var.aws_vpc_endpoint_dynamodb_name
     Namespace      = var.namespace
     BoundedContext = var.bounded_context
     Environment    = var.environment
   }
+  vpc_endpoint_type = "Gateway" # GatewayLoadBalancer, or Interface
 }
 
 resource "aws_vpc_endpoint" "s3" {
-  vpc_id       = aws_vpc.this.id
   service_name = "com.amazonaws.${var.aws_region}.s3"
-
-  # Tagging
+  vpc_id       = aws_vpc.this.id
+  # auto_accept
+  # policy
+  # private_dns_enabled = false # Applicable for endpoints of type Interface
+  route_table_ids = [aws_route_table.gateway.id, aws_route_table.application.id, aws_route_table.database.id]
+  # subnet_ids # Applicable for endpoints of type GatewayLoadBalancer and Interface.
   tags = {
     Name           = var.aws_vpc_endpoint_s3_name
     Namespace      = var.namespace
     BoundedContext = var.bounded_context
     Environment    = var.environment
   }
+  vpc_endpoint_type = "Gateway" # GatewayLoadBalancer, or Interface
 }
